@@ -61,6 +61,14 @@ export OPENAI_API_KEY="your-api-key"
 streamlit run app.py
 ```
 
+On Windows, if `streamlit` is not recognized, use the project launcher instead:
+
+```powershell
+.\run_streamlit.ps1
+```
+
+Or double-click `run_streamlit.bat`.
+
 This opens a browser page where you can:
 
 1. (Optionally) enter an OpenAI API key and select a model in the sidebar.
