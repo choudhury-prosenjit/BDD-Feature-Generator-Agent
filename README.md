@@ -55,6 +55,21 @@ export OPENAI_API_KEY="your-api-key"
 
 ## Usage
 
+### Streamlit web UI (recommended)
+
+```bash
+streamlit run app.py
+```
+
+This opens a browser page where you can:
+
+1. (Optionally) enter an OpenAI API key and select a model in the sidebar.
+2. Upload one or more Excel files via drag-and-drop.
+3. Click **Generate BDD Feature Files**.
+4. Preview each generated `.feature` file inline and download them all as a ZIP.
+
+### CLI
+
 ```bash
 python main.py --input ./testcases.xlsx --output ./output
 ```
