@@ -22,14 +22,19 @@ def gherkin_generation_node(state: dict) -> dict:
         if client is not None:
             prompt = build_gherkin_prompt(document, deterministic_output)
             try:
-                response = client.responses.create(
+                response = client.chat.completions.create(
                     model=model,
-                    input=[
+                    messages=[
                         {"role": "system", "content": GHERKIN_SYSTEM_PROMPT},
                         {"role": "user", "content": prompt},
                     ],
                 )
-                polished_output = getattr(response, "output_text", "").strip()
+                polished_output = (
+                    response.choices[0].message.content.strip()
+                    if getattr(response, "choices", None)
+                    and response.choices[0].message.content
+                    else ""
+                )
                 if polished_output:
                     generated_output = polished_output
             except Exception:

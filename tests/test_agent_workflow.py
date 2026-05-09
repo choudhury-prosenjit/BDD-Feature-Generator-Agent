@@ -3,10 +3,13 @@ from __future__ import annotations
 import tempfile
 import unittest
 from pathlib import Path
+from unittest.mock import MagicMock, patch
 
 import pandas as pd
 
 from bdd_agent.graph import run_agent
+from bdd_agent.nodes.generate_gherkin import gherkin_generation_node
+from bdd_agent.utils.gherkin_utils import FeatureDocument, ScenarioDocument
 
 
 class AgentWorkflowTests(unittest.TestCase):
@@ -112,6 +115,43 @@ class AgentWorkflowTests(unittest.TestCase):
 
         self.assertEqual(feature_content.count("Scenario:"), 1)
         self.assertNotIn("Duplicate scenario title", "\n".join(result["validation_errors"]))
+
+    def test_gherkin_generation_uses_openai_chat_completions_when_available(self) -> None:
+        document = FeatureDocument(
+            module="Billing",
+            feature="Refunds",
+            tags=["@module_billing", "@feature_refunds"],
+            scenarios=[
+                ScenarioDocument(
+                    title="Refund a completed payment",
+                    tags=["@positive"],
+                    traceability_ids=["TC-501"],
+                    steps=[
+                        "Given the payment exists",
+                        "When the agent requests a refund",
+                        "Then the refund should be created",
+                    ],
+                    scenario_type="Scenario",
+                )
+            ],
+        )
+        mocked_client = MagicMock()
+        mocked_client.chat.completions.create.return_value = MagicMock(
+            choices=[MagicMock(message=MagicMock(content="Feature: Refunds\n"))]
+        )
+
+        with patch.dict("os.environ", {"OPENAI_API_KEY": "test-key"}, clear=False):
+            with patch("bdd_agent.nodes.generate_gherkin.OpenAI", return_value=mocked_client) as openai_cls:
+                result = gherkin_generation_node(
+                    {
+                        "model": "gpt-4.1-mini",
+                        "feature_documents": {"billing::refunds": document},
+                    }
+                )
+
+        openai_cls.assert_called_once_with(api_key="test-key")
+        mocked_client.chat.completions.create.assert_called_once()
+        self.assertEqual(result["feature_documents"]["billing::refunds"].content, "Feature: Refunds")
 
 
 if __name__ == "__main__":
