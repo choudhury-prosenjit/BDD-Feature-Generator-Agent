@@ -8,13 +8,13 @@ import pandas as pd
 
 STANDARD_FIELD_ALIASES = {
     "module": ["module", "component", "domain", "area"],
-    "feature": ["feature", "feature name", "user story", "capability"],
+    "feature": ["feature", "feature name", "user story", "capability", "scenario"],
     "test_case_id": ["test case id", "testcase id", "tc id", "id", "case id"],
-    "title": ["test case title", "title", "scenario", "test name"],
-    "preconditions": ["preconditions", "precondition", "prerequisite"],
+    "title": ["detailed test case", "test case title", "title", "scenario", "test name"],
+    "preconditions": ["preconditions", "precondition", "pre conditions", "prerequisite"],
     "steps": ["test steps", "steps", "action steps", "procedure"],
     "test_data": ["test data", "data", "input data"],
-    "expected_result": ["expected result", "expected", "result", "outcome"],
+    "expected_result": ["expected result", "expected results", "expected", "result", "outcome"],
     "priority": ["priority", "severity"],
     "case_type": ["type", "case type", "test type", "classification"],
 }

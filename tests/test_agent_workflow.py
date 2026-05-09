@@ -116,6 +116,37 @@ class AgentWorkflowTests(unittest.TestCase):
         self.assertEqual(feature_content.count("Scenario:"), 1)
         self.assertNotIn("Duplicate scenario title", "\n".join(result["validation_errors"]))
 
+    def test_supports_requested_exact_excel_columns(self) -> None:
+        self._write_excel(
+            pd.DataFrame(
+                [
+                    {
+                        "Test Case ID": "ZELLE-001",
+                        "Module": "Payments",
+                        "Scenario": "Zelle Transfer",
+                        "Pre-conditions": "the customer is authenticated",
+                        "Detailed Test Case": "Transfer funds to an enrolled recipient",
+                        "Test Steps": "select recipient\nenter amount\nconfirm transfer",
+                        "Expected Results": "the transfer should complete successfully",
+                        "Priority": "High",
+                        "Type": "positive",
+                    }
+                ]
+            )
+        )
+
+        result = run_agent([str(self.input_file)], str(self.output_dir))
+
+        self.assertFalse(result["validation_errors"])
+        self.assertEqual(len(result["written_files"]), 1)
+
+        feature_content = Path(result["written_files"][0]).read_text(encoding="utf-8")
+        self.assertIn("Feature: Zelle Transfer", feature_content)
+        self.assertIn("Scenario: Transfer funds to an enrolled recipient", feature_content)
+        self.assertIn("Given the customer is authenticated", feature_content)
+        self.assertIn("Then the transfer should complete successfully", feature_content)
+        self.assertIn("# Traceability: ZELLE-001", feature_content)
+
     def test_gherkin_generation_uses_openai_chat_completions_when_available(self) -> None:
         document = FeatureDocument(
             module="Billing",

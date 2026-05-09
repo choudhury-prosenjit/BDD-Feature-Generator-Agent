@@ -87,13 +87,13 @@ python main.py --input ./testcases.xlsx --output ./output --model gpt-4.1-mini
 The agent looks for columns similar to these names:
 
 - Module
-- Feature
 - Test Case ID
-- Test Case Title
-- Preconditions
+- Feature / Scenario
+- Test Case Title / Detailed Test Case
+- Preconditions / Pre-conditions
 - Test Steps
 - Test Data
-- Expected Result
+- Expected Result / Expected Results
 - Priority
 - Type
 
