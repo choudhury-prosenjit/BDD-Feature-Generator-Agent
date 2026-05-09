@@ -7,16 +7,16 @@ from typing import Any
 import pandas as pd
 
 STANDARD_FIELD_ALIASES = {
-    "module": ["Module", "component", "domain", "area"],
-    "feature": ["Feature", "feature name", "user story", "capability", "Scenario"],
+    "module": ["module", "component", "domain", "area"],
+    "feature": ["feature", "feature name", "user story", "capability", "scenario"],
     "test_case_id": ["test case id", "testcase id", "tc id", "id", "case id"],
-    "title": ["Detailed Test Case", "test case title", "title", "test name"],
-    "preconditions": ["Pre-conditions", "preconditions", "precondition", "pre conditions", "prerequisite"],
-    "steps": ["Test Steps", "steps", "action steps", "procedure"],
+    "title": ["detailed test case", "test case title", "title", "test name"],
+    "preconditions": ["pre-conditions", "preconditions", "precondition", "pre conditions", "prerequisite"],
+    "steps": ["test steps", "steps", "action steps", "procedure"],
     "test_data": ["test data", "data", "input data"],
-    "expected_result": ["Expected Results", "expected result", "expected", "result", "outcome"],
-    "priority": ["Priority", "severity"],
-    "case_type": ["Type", "case type", "test type", "classification"],
+    "expected_result": ["expected results", "expected result", "expected", "result", "outcome"],
+    "priority": ["priority", "severity"],
+    "case_type": ["type", "case type", "test type", "classification"],
 }
 
 
